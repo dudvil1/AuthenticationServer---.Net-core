@@ -40,9 +40,20 @@ namespace AuthenticationServer_.Net_core.Data.ApplicationQuary
             return await _db.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
         }
 
-        public Task<IUser> UpdateUser(RegisterDto dto)
+        public async Task<IUser> UpdateUserPassword(string email, string password)
         {
-            throw new NotImplementedException();
+            var user = await _db.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
+            user.Password = password;
+            await _db.SaveChangesAsync();
+            return user;
+        }
+
+        public async Task<IUser> DeleteUserPassword(string email)
+        {
+            var user = await _db.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
+            user.Password = string.Empty;
+            await _db.SaveChangesAsync();
+            return user;
         }
     }
 }

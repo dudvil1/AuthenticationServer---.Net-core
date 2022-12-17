@@ -8,6 +8,6 @@ namespace AuthenticationServer_.Net_core.Models
         [Key()]
         public string Email { get; set; } = default!;
         public string Token { get; set; } = default!;
- 
+
     }
 }

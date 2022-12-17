@@ -12,5 +12,9 @@ namespace AuthenticationServer_.Net_core.Data.Interfaces
         Task<IUser> GetUserByEmail(string email);
 
         Task<IUser> GetUserById(int id);
+
+        Task<IUser> UpdateUserPassword(string email, string password);
+
+        Task<IUser> DeleteUserPassword(string email);
     }
 }

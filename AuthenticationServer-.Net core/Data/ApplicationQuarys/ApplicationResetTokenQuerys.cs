@@ -1,6 +1,7 @@
 ﻿using AuthenticationServer_.Net_core.Data.ApplicationQuaryBase;
 using AuthenticationServer_.Net_core.Models;
 using AuthenticationServer_.Net_core.Models.ModelsBase;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthenticationServer_.Net_core.Data.ApplicationQuarys
 {
@@ -22,6 +23,11 @@ namespace AuthenticationServer_.Net_core.Data.ApplicationQuarys
             });
             await _db.SaveChangesAsync();
             return resetToken.Entity;
+        }
+
+        public async Task<IResetToken> GetResetTokenByToken(string token)
+        {
+            return await _db.ResetTokens.Where(u => u.Token == token).FirstOrDefaultAsync();
         }
     }
 }

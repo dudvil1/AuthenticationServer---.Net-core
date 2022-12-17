@@ -2,11 +2,14 @@
 
 namespace AuthenticationServer_.Net_core.Controllers
 {
+    [ApiController]
+    [Route("/")]
     public class DefaultsController : Controller
     {
-        public IActionResult Index()
+        [HttpGet("")]
+        public async Task<IActionResult> Index()
         {
-            return View();
+            return await Ok("Server alive");
         }
     }
 }

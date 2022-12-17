@@ -1,6 +1,6 @@
 ﻿namespace AuthenticationServer_.Net_core.Helpers
 {
-    public  class AuthenticationControllerHelper
+    public class ControllerHelper
     {
         public bool CheckPasswordConfirm(string passwordDto, string passwordConfirm)
         {

@@ -1,5 +1,4 @@
 ﻿using AuthenticationServer_.Net_core.Models;
-using AuthenticationServer_.Net_core.Models.ModelsBase;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuthenticationServer_.Net_core.Data

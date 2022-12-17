@@ -7,7 +7,7 @@ namespace AuthenticationServer_.Net_core.Models
 {
     public class User : IUser
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity),Key()]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key()]
         public int Id { get; set; }
         [JsonPropertyName("First_Name")]
         public string FirstName { get; set; } = default!;
