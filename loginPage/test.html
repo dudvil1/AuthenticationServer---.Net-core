@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+</head>
+<body>
+  <button onclick="showLoginPopup()">Login</button>
+
+  <script>
+    function showLoginPopup() {
+      var overlay = document.createElement("div");
+      overlay.style.position = "fixed";
+      overlay.style.top = "0";
+      overlay.style.left = "0";
+      overlay.style.width = "100%";
+      overlay.style.height = "100%";
+      overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+      overlay.style.display = "flex";
+      overlay.style.justifyContent = "center";
+      overlay.style.alignItems = "center";
+
+      var formContainer = document.createElement("div");
+      formContainer.style.backgroundColor = "#fff";
+      formContainer.style.padding = "20px";
+      formContainer.style.borderRadius = "5px";
+
+      var usernameLabel = document.createElement("label");
+      usernameLabel.textContent = "Username:";
+      var usernameInput = document.createElement("input");
+      usernameInput.type = "text";
+      usernameInput.required = true;
+
+      var passwordLabel = document.createElement("label");
+      passwordLabel.textContent = "Password:";
+      var passwordInput = document.createElement("input");
+      passwordInput.type = "password";
+      passwordInput.required = true;
+
+      var okButton = document.createElement("button");
+      okButton.textContent = "OK";
+      okButton.onclick = login;
+
+      var clearButton = document.createElement("button");
+      clearButton.textContent = "Clear";
+      clearButton.onclick = hideLoginPopup;
+
+      formContainer.appendChild(usernameLabel);
+      formContainer.appendChild(usernameInput);
+      formContainer.appendChild(passwordLabel);
+      formContainer.appendChild(passwordInput);
+      formContainer.appendChild(okButton);
+      formContainer.appendChild(clearButton);
+
+      overlay.appendChild(formContainer);
+
+      document.body.appendChild(overlay);
+
+      function hideLoginPopup() {
+        document.body.removeChild(overlay);
+      }
+
+      function login() {
+        var username = usernameInput.value;
+        var password = passwordInput.value;
+
+        // Do something with the username and password
+        console.log("Username: " + username);
+        console.log("Password: " + password);
+
+        // Clear the input fields
+        usernameInput.value = "";
+        passwordInput.value = "";
+
+        // Hide the login popup
+        hideLoginPopup();
+      }
+    }
+  </script>
+</body>
+</html>
