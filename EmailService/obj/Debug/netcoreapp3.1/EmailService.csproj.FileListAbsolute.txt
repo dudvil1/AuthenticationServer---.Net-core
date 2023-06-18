@@ -1,0 +1,10 @@
+C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net-core\EmailService\bin\Debug\netcoreapp3.1\EmailService.deps.json
+C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net-core\EmailService\bin\Debug\netcoreapp3.1\EmailService.dll
+C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net-core\EmailService\bin\Debug\netcoreapp3.1\EmailService.pdb
+C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net-core\EmailService\obj\Debug\netcoreapp3.1\EmailService.csproj.AssemblyReference.cache
+C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net-core\EmailService\obj\Debug\netcoreapp3.1\EmailService.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net-core\EmailService\obj\Debug\netcoreapp3.1\EmailService.AssemblyInfoInputs.cache
+C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net-core\EmailService\obj\Debug\netcoreapp3.1\EmailService.AssemblyInfo.cs
+C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net-core\EmailService\obj\Debug\netcoreapp3.1\EmailService.csproj.CoreCompileInputs.cache
+C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net-core\EmailService\obj\Debug\netcoreapp3.1\EmailService.dll
+C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net-core\EmailService\obj\Debug\netcoreapp3.1\EmailService.pdb

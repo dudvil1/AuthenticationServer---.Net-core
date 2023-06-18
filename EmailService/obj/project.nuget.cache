@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "FXTsLVxwKT679ZaOicNAwO7HBSIvEay6XIxx0kM4JLdM6ag1B8LhD5wQnCk7XerLJgVXQC+2E7SxzqthSlPAXg==",
+  "dgSpecHash": "g9zM2xzxadEvd2mrrzi4FdqX8gEbeAMIdAgmowunpzvy9rg3Ng4xRY3TGw9xwFslIqFA+kPfpPi6J7KIw8rNQw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Dudu\\Desktop\\GitHub\\AuthenticationServer-.Net core\\AuthenticationServer-.Net core\\EmailService\\EmailService.csproj",
+  "projectFilePath": "C:\\Users\\Dudu\\Desktop\\GitHub\\AuthenticationServer-.Net core\\AuthenticationServer-.Net-core\\EmailService\\EmailService.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Dudu\\.nuget\\packages\\mailkit\\3.2.0\\mailkit.3.2.0.nupkg.sha512",
     "C:\\Users\\Dudu\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\6.0.0\\microsoft.extensions.dependencyinjection.6.0.0.nupkg.sha512",

@@ -59,3 +59,12 @@ C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer
 C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net core\AuthenticationServer-.Net core\obj\Debug\net6.0\AuthenticationServer-.Net core.pdb
 C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net core\AuthenticationServer-.Net core\obj\Debug\net6.0\AuthenticationServer-.Net core.genruntimeconfig.cache
 C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net core\AuthenticationServer-.Net core\obj\Debug\net6.0\ref\AuthenticationServer-.Net core.dll
+C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net-core\AuthenticationServer-.Net core\obj\Debug\net6.0\AuthenticationServer-.Net core.csproj.AssemblyReference.cache
+C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net-core\AuthenticationServer-.Net core\obj\Debug\net6.0\AuthenticationServer-.Net core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net-core\AuthenticationServer-.Net core\obj\Debug\net6.0\AuthenticationServer-.Net core.AssemblyInfoInputs.cache
+C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net-core\AuthenticationServer-.Net core\obj\Debug\net6.0\AuthenticationServer-.Net core.AssemblyInfo.cs
+C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net-core\AuthenticationServer-.Net core\obj\Debug\net6.0\AuthenticationServer-.Net core.csproj.CoreCompileInputs.cache
+C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net-core\AuthenticationServer-.Net core\obj\Debug\net6.0\AuthenticationServer-.Net core.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net-core\AuthenticationServer-.Net core\obj\Debug\net6.0\AuthenticationServer-.Net core.dll
+C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net-core\AuthenticationServer-.Net core\obj\Debug\net6.0\refint\AuthenticationServer-.Net core.dll
+C:\Users\Dudu\Desktop\GitHub\AuthenticationServer-.Net core\AuthenticationServer-.Net-core\AuthenticationServer-.Net core\obj\Debug\net6.0\AuthenticationServer-.Net core.pdb

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "WIuz/sBvT/0h8EkWVgxrgtGtIXJuVga3EtEAmsFP5ACOegBzHe8eeXyhYvXDq9rk+B3G2FcBuhHASvtfeBXZKg==",
+  "dgSpecHash": "bnbp84DZXkW7krMM8fKQg/jxGeQKU2l6TuIj01Pwb399ZN85cR2UOd8nf8m+1JQKYHWGTyoofw9cMDzBVofHeQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Dudu\\Desktop\\GitHub\\AuthenticationServer-.Net core\\AuthenticationServer-.Net core\\AuthenticationServer-.Net core\\AuthenticationServer-.Net core.csproj",
+  "projectFilePath": "C:\\Users\\Dudu\\Desktop\\GitHub\\AuthenticationServer-.Net core\\AuthenticationServer-.Net-core\\AuthenticationServer-.Net core\\AuthenticationServer-.Net core.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Dudu\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Dudu\\.nuget\\packages\\mailkit\\3.2.0\\mailkit.3.2.0.nupkg.sha512",

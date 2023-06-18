@@ -38,7 +38,7 @@ namespace AuthenticationServer_.Net_core.Controllers
             if (query == null)
                 return Problem();
 
-            return Ok(query)
+            return Ok(query);
         }
 
         [HttpGet("login")]
