@@ -1,80 +1,78 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Login</title>
-</head>
-<body>
-  <button onclick="showLoginPopup()">Login</button>
+const readline = require('readline');
+const ssh2 = require('ssh2');
 
-  <script>
-    function showLoginPopup() {
-      var overlay = document.createElement("div");
-      overlay.style.position = "fixed";
-      overlay.style.top = "0";
-      overlay.style.left = "0";
-      overlay.style.width = "100%";
-      overlay.style.height = "100%";
-      overlay.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-      overlay.style.display = "flex";
-      overlay.style.justifyContent = "center";
-      overlay.style.alignItems = "center";
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
-      var formContainer = document.createElement("div");
-      formContainer.style.backgroundColor = "#fff";
-      formContainer.style.padding = "20px";
-      formContainer.style.borderRadius = "5px";
+const conn = new ssh2.Client();
 
-      var usernameLabel = document.createElement("label");
-      usernameLabel.textContent = "Username:";
-      var usernameInput = document.createElement("input");
-      usernameInput.type = "text";
-      usernameInput.required = true;
+conn.on('ready', () => {
+    rl.question('Enter a folder name: ', (folderName) => {
+        // Step 1: Run 'ls' command
+        conn.exec('ls -l', (lsErr, lsStream) => {
+            if (lsErr) {
+                console.error('Error executing ls command:', lsErr);
+                conn.end();
+                return;
+            }
 
-      var passwordLabel = document.createElement("label");
-      passwordLabel.textContent = "Password:";
-      var passwordInput = document.createElement("input");
-      passwordInput.type = "password";
-      passwordInput.required = true;
+            let lsOutput = '';
 
-      var okButton = document.createElement("button");
-      okButton.textContent = "OK";
-      okButton.onclick = login;
+            lsStream.on('close', (lsCode, lsSignal) => {
+                console.log(`ls Command exited with code ${lsCode}`);
 
-      var clearButton = document.createElement("button");
-      clearButton.textContent = "Clear";
-      clearButton.onclick = hideLoginPopup;
+                // Step 2: Check if 'test' folder exists in the ls output
+                if (lsOutput.includes('test')) {
+                    // Step 3: Check if folderName folder exists within 'test'
+                    if (!lsOutput.includes(`test/${folderName}`)) {
+                        // Step 4: Create folderName folder within 'test'
+                        conn.exec(`mkdir test/${folderName}`, (mkdirErr, mkdirStream) => {
+                            if (mkdirErr) {
+                                console.error(`Error creating ${folderName} folder:`, mkdirErr);
+                                conn.end();
+                                return;
+                            }
 
-      formContainer.appendChild(usernameLabel);
-      formContainer.appendChild(usernameInput);
-      formContainer.appendChild(passwordLabel);
-      formContainer.appendChild(passwordInput);
-      formContainer.appendChild(okButton);
-      formContainer.appendChild(clearButton);
+                            mkdirStream.on('close', (mkdirCode, mkdirSignal) => {
+                                console.log(`mkdir Command exited with code ${mkdirCode}`);
+                                conn.end();
+                            }).on('data', (mkdirData) => {
+                                console.log(`mkdir Output: ${mkdirData}`);
+                            }).stderr.on('data', (mkdirErrData) => {
+                                console.log(`mkdir Error: ${mkdirErrData}`);
+                            });
+                        });
+                    } else {
+                        conn.end();
+                    }
+                } else {
+                    conn.end();
+                }
+            }).on('data', (lsData) => {
+                lsOutput += lsData;
+                console.log(`ls Output: ${lsData}`);
+            }).stderr.on('data', (lsErrData) => {
+                console.log(`ls Error: ${lsErrData}`);
+            });
+        });
+    });
+});
 
-      overlay.appendChild(formContainer);
+conn.on('error', (err) => {
+    console.error('SSH connection error:', err);
+    conn.end();
+});
 
-      document.body.appendChild(overlay);
+conn.on('end', () => {
+    console.log('SSH connection closed.');
+    rl.close(); // Close the readline interface
+});
 
-      function hideLoginPopup() {
-        document.body.removeChild(overlay);
-      }
-
-      function login() {
-        var username = usernameInput.value;
-        var password = passwordInput.value;
-
-        // Do something with the username and password
-        console.log("Username: " + username);
-        console.log("Password: " + password);
-
-        // Clear the input fields
-        usernameInput.value = "";
-        passwordInput.value = "";
-
-        // Hide the login popup
-        hideLoginPopup();
-      }
-    }
-  </script>
-</body>
-</html>
+conn.connect({
+    host: 'your_server_hostname_or_ip',
+    port: 22,
+    username: 'your_username',
+    password: 'your_password', // OR privateKey: require('fs').readFileSync('path/to/private/key')
+});
