@@ -1,15 +1,9 @@
-const readline = require('readline');
 const ssh2 = require('ssh2');
 
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
+function runSSHCommand(folderName) {
+    const conn = new ssh2.Client();
 
-const conn = new ssh2.Client();
-
-conn.on('ready', () => {
-    rl.question('Enter a folder name: ', (folderName) => {
+    conn.on('ready', () => {
         // Step 1: Run 'ls' command
         conn.exec('ls -l', (lsErr, lsStream) => {
             if (lsErr) {
@@ -58,21 +52,24 @@ conn.on('ready', () => {
             });
         });
     });
-});
 
-conn.on('error', (err) => {
-    console.error('SSH connection error:', err);
-    conn.end();
-});
+    conn.on('error', (err) => {
+        console.error('SSH connection error:', err);
+        conn.end();
+    });
 
-conn.on('end', () => {
-    console.log('SSH connection closed.');
-    rl.close(); // Close the readline interface
-});
+    conn.on('end', () => {
+        console.log('SSH connection closed.');
+    });
 
-conn.connect({
-    host: 'your_server_hostname_or_ip',
-    port: 22,
-    username: 'your_username',
-    password: 'your_password', // OR privateKey: require('fs').readFileSync('path/to/private/key')
-});
+    conn.connect({
+        host: 'your_server_hostname_or_ip',
+        port: 22,
+        username: 'your_username',
+        password: 'your_password', // OR privateKey: require('fs').readFileSync('path/to/private/key')
+    });
+}
+
+// Call the function with the user input
+const userInput = 'your_user_input'; // Replace with actual user input
+runSSHCommand(userInput);
