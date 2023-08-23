@@ -1,74 +1,45 @@
-const { NodeSSH } = require("node-ssh");
-const ssh = new NodeSSH();
-const dotenv = require("dotenv");
-dotenv.config(); // Load environment variables from .env file
+const { Client } = require("ssh2");
 
-function executeSSHCommands(params) {
-  const sshConfig = {
-    host: "your_server_hostname_or_ip",
-    port: 22,
-    username: "your_username",
-    password: "your_password", // OR privateKey: 'path/to/private/key'
-  };
+function cloneGitRepository(params) {
+  const client = new Client();
 
-  ssh
-    .connect(sshConfig)
-    .then(() => {
-      // Step 1: Run 'ls' command
-      return ssh.execCommand("ls");
+  client
+    .on("ready", () => {
+      client.shell((err, stream) => {
+        if (err) throw err;
+
+        stream
+          .on("close", () => {
+            console.log("Shell session closed");
+            client.end();
+          })
+          .on("data", (data) => {
+            const output = data.toString();
+            console.log(output);
+
+            // Check if Git is asking for credentials and respond with username and password
+            if (output.includes("Username for")) {
+              stream.stdin.write("your-git-username\n");
+            } else if (output.includes("Password for")) {
+              stream.stdin.write("your-git-password\n");
+            }
+          });
+
+        // Check if the "test" folder exists, and then attempt to enter it
+        const checkFolderCommand = `[ -d "test" ] && cd test || echo "Folder does not exist"\n`;
+        const cloneCommand = `git clone https://github.com/username/repo.git "${params}"\n`;
+
+        stream.end(`${checkFolderCommand}${cloneCommand}`);
+      });
     })
-    .then((lsResult) => {
-      if (lsResult.code !== 0) {
-        console.error("Error executing ls command:", lsResult.stderr);
-        return;
-      }
-
-      const lsOutput = lsResult.stdout;
-
-      // Step 2: Check if 'DcsEKS' folder exists in the ls output
-      if (!lsOutput.includes("DcsEKS")) {
-        console.log("'DcsEKS' folder not found.");
-        ssh.dispose();
-        return;
-      }
-
-      // Step 3: Check if folderName exists inside 'DcsEKS'
-      const dcsEKSPath = `DcsEKS/${params}`;
-      if (!lsOutput.includes(dcsEKSPath)) {
-        // Step 4: Create folderName folder within 'DcsEKS'
-        return ssh.execCommand(`mkdir ${dcsEKSPath}`).then((mkdirResult) => {
-          if (mkdirResult.code !== 0) {
-            console.error(
-              `Error creating ${dcsEKSPath} folder:`,
-              mkdirResult.stderr
-            );
-            return;
-          }
-
-          // Step 5: Clone repository using Git URL from environment variable
-          const gitCloneUrl = `${process.env.GIT_URL}${params}.git`;
-          return ssh.execCommand(
-            `cd ${dcsEKSPath} && git clone ${gitCloneUrl}`
-          );
-        });
-      } else {
-        // Step 5: Run 'git pull' inside the existing folder
-        return ssh.execCommand(`cd ${dcsEKSPath} && git pull`);
-      }
-    })
-    .then((gitResult) => {
-      if (gitResult && gitResult.code !== 0) {
-        console.error("Error running Git command:", gitResult.stderr);
-      }
-    })
-    .catch((err) => {
-      console.error("SSH connection error:", err);
-    })
-    .finally(() => {
-      ssh.dispose();
+    .connect({
+      host: "example.com", // Replace with the remote host address
+      port: 22,
+      username: "your-username",
+      password: "your-password",
     });
 }
 
-// Call the function with the user input (params)
-const userInput = "folder_name"; // Replace with the desired folder name
-executeSSHCommands(userInput);
+// Call the function with the desired parameter value (folder name)
+const folderName = process.argv[2]; // Get the parameter from the command line
+cloneGitRepository(folderName);
