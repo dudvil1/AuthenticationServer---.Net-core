@@ -1,45 +1,55 @@
 const { Client } = require("ssh2");
+const expect = require("expect");
 
-function cloneGitRepository(params) {
-  const client = new Client();
+// SSH connection information
+const connSettings = {
+  host: "your_machine_ip",
+  port: 22,
+  username: "your_username",
+  password: "your_password",
+};
 
-  client
-    .on("ready", () => {
-      client.shell((err, stream) => {
-        if (err) throw err;
+// Git repository URL
+const gitUrl = "your_git_repository_url";
 
-        stream
-          .on("close", () => {
-            console.log("Shell session closed");
-            client.end();
-          })
-          .on("data", (data) => {
-            const output = data.toString();
-            console.log(output);
+// Create an SSH client
+const conn = new Client();
 
-            // Check if Git is asking for credentials and respond with username and password
-            if (output.includes("Username for")) {
-              stream.stdin.write("your-git-username\n");
-            } else if (output.includes("Password for")) {
-              stream.stdin.write("your-git-password\n");
-            }
-          });
+conn
+  .on("ready", () => {
+    console.log("Connected");
+    conn.shell((err, stream) => {
+      if (err) throw err;
 
-        // Check if the "test" folder exists, and then attempt to enter it
-        const checkFolderCommand = `[ -d "test" ] && cd test || echo "Folder does not exist"\n`;
-        const cloneCommand = `git clone https://github.com/username/repo.git "${params}"\n`;
+      const session = expect(stream)
+        .expect(/[$#>] $/) // Regular shell prompt
+        .send("cd test\n")
+        .expect(/[$#>] $/)
+        .send(`git clone ${gitUrl}\n`)
+        .expect(/Username for .*: $/)
+        .send("user123\n")
+        .expect(/Password for .*: $/)
+        .send("pass123\n")
+        .wait(/[$#>] $/)
+        .send("exit\n")
+        .run();
 
-        stream.end(`${checkFolderCommand}${cloneCommand}`);
+      session.on("output", (data) => {
+        console.log("Shell Output:", data);
       });
-    })
-    .connect({
-      host: "example.com", // Replace with the remote host address
-      port: 22,
-      username: "your-username",
-      password: "your-password",
-    });
-}
 
-// Call the function with the desired parameter value (folder name)
-const folderName = process.argv[2]; // Get the parameter from the command line
-cloneGitRepository(folderName);
+      session.on("error", (err) => {
+        console.error("Error:", err);
+      });
+
+      stream.on("close", () => {
+        console.log("Stream closed");
+        conn.end();
+      });
+    });
+  })
+  .connect(connSettings);
+
+conn.on("error", (err) => {
+  console.error("Error:", err.message);
+});
