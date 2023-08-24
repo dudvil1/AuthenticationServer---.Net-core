@@ -1,7 +1,5 @@
 const { Client } = require("ssh2");
-const expect = require("expect");
 
-// SSH connection information
 const connSettings = {
   host: "your_machine_ip",
   port: 22,
@@ -9,46 +7,46 @@ const connSettings = {
   password: "your_password",
 };
 
-// Git repository URL
-const gitUrl = "your_git_repository_url";
-
-// Create an SSH client
 const conn = new Client();
 
-conn
-  .on("ready", () => {
-    console.log("Connected");
-    conn.shell((err, stream) => {
-      if (err) throw err;
+conn.on("ready", () => {
+  console.log("Connected");
 
-      const session = expect(stream)
-        .expect(/[$#>] $/) // Regular shell prompt
-        .send("cd test\n")
-        .expect(/[$#>] $/)
-        .send(`git clone ${gitUrl}\n`)
-        .expect(/Username for .*: $/)
-        .send("user123\n")
-        .expect(/Password for .*: $/)
-        .send("pass123\n")
-        .wait(/[$#>] $/)
-        .send("exit\n")
-        .run();
+  conn.shell((err, stream) => {
+    if (err) throw err;
 
-      session.on("output", (data) => {
-        console.log("Shell Output:", data);
-      });
+    let commandIndex = 0;
 
-      session.on("error", (err) => {
-        console.error("Error:", err);
-      });
+    const commands = [
+      { pattern: /[$#>] $/, command: "cd test" },
+      { pattern: /[$#>] $/, command: `git clone your_git_repository_url` },
+      { pattern: /Username for .*: $/, command: "user123" },
+      { pattern: /Password for .*: $/, command: "pass123" },
+      // Add more commands as needed
+    ];
 
-      stream.on("close", () => {
-        console.log("Stream closed");
-        conn.end();
-      });
+    stream.on("data", (data) => {
+      const output = data.toString();
+      console.log(output);
+
+      const currentCommand = commands[commandIndex];
+      if (currentCommand && currentCommand.pattern.test(output)) {
+        stream.write(currentCommand.command + "\n");
+        commandIndex++;
+      } else if (commandIndex >= commands.length) {
+        console.log("All commands sent");
+        stream.end("exit\n");
+      }
     });
-  })
-  .connect(connSettings);
+
+    stream.on("close", () => {
+      console.log("Stream closed");
+      conn.end();
+    });
+  });
+});
+
+conn.connect(connSettings);
 
 conn.on("error", (err) => {
   console.error("Error:", err.message);
