@@ -40,3 +40,13 @@ conn
     username: "your_username",
     password: "your_password",
   });
+
+
+  const idMatch = jsonString.match(/"id"\s*:\s*(\d+)/);
+
+  if (idMatch) {
+    const idValue = parseInt(idMatch[1]);
+    console.log("ID:", idValue);
+  } else {
+    console.log('No "id" key found in the JSON string.');
+  }
