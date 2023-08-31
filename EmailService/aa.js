@@ -58,24 +58,4 @@ if (createdAtMatch) {
 } else {
   console.error('CreatedAt value not found in the JSON string.');
 }
-
-
-const createdAtPattern = /"CreatedAt":\s*"(.*?)"/;
-const createdAtMatch = jsonString.match(createdAtPattern);
-
-if (createdAtMatch) {
-  const createdAtValue = createdAtMatch[1].replace(/\s+\w+$/, ""); // Remove the timezone abbreviation
-  const correctedJsonString = jsonString.replace(
-    createdAtPattern,
-    `"CreatedAt": "${createdAtValue}"`
-  );
-
-  try {
-    const jsonObject = JSON.parse(correctedJsonString);
-    console.log(jsonObject);
-  } catch (error) {
-    console.error("Error parsing JSON:", error);
-  }
-} else {
-  console.error("CreatedAt value not found in the JSON string.");
-}
+const idPattern = /"ID":\s*"([^"]+)"/;
