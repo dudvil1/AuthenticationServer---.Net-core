@@ -1,67 +1,42 @@
 const { Client } = require("ssh2");
 
-const connSettings = {
-  host: "your_machine_ip",
-  port: 22,
-  username: "your_username",
-  password: "your_password",
-};
+const conn = new Client();
 
-const executeCommands = async () => {
-  const conn = new Client();
+conn
+  .on("ready", () => {
+    console.log("SSH connection ready");
 
-  try {
-    await new Promise((resolve, reject) => {
-      conn.on("ready", () => {
-        console.log("Connected");
+    // Run the docker ps command on the remote server
+    conn.shell((err, stream) => {
+      if (err) throw err;
 
-        conn.shell((err, stream) => {
-          if (err) reject(err);
+      stream
+        .on("close", () => {
+          console.log("SSH shell closed");
+          conn.end();
+        })
+        .on("data", (data) => {
+          const dataString = data.toString();
+          const lines = dataString.trim().split("\n");
 
-          let commandIndex = 0;
-
-          const commands = [
-            { pattern: /[$#>] $/, command: "cd test" },
-            {
-              pattern: /[$#>] $/,
-              command: `git clone your_git_repository_url`,
-            },
-            { pattern: /Username for .*: $/, command: "user123" },
-            { pattern: /Password for .*: $/, command: "pass123" },
-            // Add more commands as needed
-          ];
-
-          stream.on("data", (data) => {
-            const output = data.toString();
-            console.log(output);
-
-            const currentCommand = commands[commandIndex];
-            if (currentCommand && currentCommand.pattern.test(output)) {
-              stream.write(currentCommand.command + "\n");
-              commandIndex++;
-            } else if (commandIndex >= commands.length) {
-              console.log("All commands sent");
-              stream.end("exit\n");
+          lines.forEach((line) => {
+            try {
+              const container = JSON.parse(line);
+              console.log(container);
+            } catch (error) {
+              console.error("Error parsing JSON:", error);
             }
           });
-
-          stream.on("close", () => {
-            console.log("Stream closed");
-            conn.end();
-            resolve(); // Resolve the promise when the stream is closed
-          });
         });
-      });
 
-      conn.connect(connSettings);
-
-      conn.on("error", (err) => {
-        reject(err);
-      });
+      stream.end(
+        "docker ps --format '{{json .}}' | grep \"0.0.0.0:3306->3306/tcp\"\nexit\n"
+      );
     });
-  } catch (error) {
-    console.error("Error:", error.message);
-  }
-};
-
-executeCommands();
+  })
+  .connect({
+    host: "your_remote_server_ip",
+    port: 22,
+    username: "your_username",
+    password: "your_password",
+  });
