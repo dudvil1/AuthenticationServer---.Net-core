@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Docker PS Table</title>
+    <title>Docker Containers Count</title>
 </head>
 <body>
-    <h1>Docker PS Table</h1>
+    <h1>Docker Containers Count</h1>
+
+    <div id="containerCount">
+        <!-- Docker container count will be inserted here -->
+    </div>
+
     <table border="1">
         <thead>
             <tr>
-                <th>CONTAINER ID</th>
                 <th>IMAGE</th>
-                <th>COMMAND</th>
-                <th>CREATED</th>
-                <th>STATUS</th>
                 <th>PORTS</th>
-                <th>NAMES</th>
             </tr>
         </thead>
         <tbody id="dockerTableBody">
-            <!-- Data from Docker PS command will be inserted here -->
+            <!-- Data for Docker images and ports will be inserted here -->
         </tbody>
     </table>
 
@@ -37,19 +37,31 @@
         // Initialize the table body element
         const tableBody = document.getElementById('dockerTableBody');
 
+        // Initialize the container count element
+        const containerCountElement = document.getElementById('containerCount');
+
+        // Set the container count
+        containerCountElement.textContent = `Total Docker Containers: ${lines.length - 1}`; // Subtract 1 for the header row
+
         // Iterate over the lines starting from the second line
         for (let i = 1; i < lines.length; i++) {
             const values = lines[i].split(/\s+/);
 
-            // Create a new row for each container
+            // Extract the image and ports values
+            const image = values[1];
+            const ports = values[6];
+
+            // Create a new row for each Docker container
             const row = document.createElement('tr');
 
-            // Create cells for each column
-            for (let j = 0; j < values.length; j++) {
-                const cell = document.createElement(i === 1 ? 'th' : 'td'); // Use th for header row
-                cell.textContent = values[j];
-                row.appendChild(cell);
-            }
+            // Create cells for the image and ports columns
+            const imageCell = document.createElement('td');
+            imageCell.textContent = image;
+            row.appendChild(imageCell);
+
+            const portsCell = document.createElement('td');
+            portsCell.textContent = ports;
+            row.appendChild(portsCell);
 
             tableBody.appendChild(row);
         }
