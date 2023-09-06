@@ -1,26 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Docker Containers Count</title>
+    <title>Docker Containers Dropdown</title>
 </head>
 <body>
-    <h1>Docker Containers Count</h1>
+    <h1>Docker Containers Dropdown</h1>
 
     <div id="containerCount">
         <!-- Docker container count will be inserted here -->
     </div>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>IMAGE</th>
-                <th>PORTS</th>
-            </tr>
-        </thead>
-        <tbody id="dockerTableBody">
-            <!-- Data for Docker images and ports will be inserted here -->
-        </tbody>
-    </table>
+    <label for="dockerDropdown">Select a Docker Container:</label>
+    <select id="dockerDropdown">
+        <!-- Docker container options will be inserted here -->
+    </select>
 
     <script>
         // Assuming you have the Docker PS output as a string
@@ -34,16 +27,14 @@
         // Split the output into lines
         const lines = dockerPsOutput.trim().split('\n');
 
-        // Initialize the table body element
-        const tableBody = document.getElementById('dockerTableBody');
-
         // Initialize the container count element
         const containerCountElement = document.getElementById('containerCount');
-
-        // Set the container count
         containerCountElement.textContent = `Total Docker Containers: ${lines.length - 1}`; // Subtract 1 for the header row
 
-        // Iterate over the lines starting from the second line
+        // Initialize the dropdown element
+        const dockerDropdown = document.getElementById('dockerDropdown');
+
+        // Create options for the dropdown
         for (let i = 1; i < lines.length; i++) {
             const values = lines[i].split(/\s+/);
 
@@ -51,19 +42,12 @@
             const image = values[1];
             const ports = values[6];
 
-            // Create a new row for each Docker container
-            const row = document.createElement('tr');
+            // Create an option element for each Docker container
+            const option = document.createElement('option');
+            option.textContent = image;
+            option.value = ports;
 
-            // Create cells for the image and ports columns
-            const imageCell = document.createElement('td');
-            imageCell.textContent = image;
-            row.appendChild(imageCell);
-
-            const portsCell = document.createElement('td');
-            portsCell.textContent = ports;
-            row.appendChild(portsCell);
-
-            tableBody.appendChild(row);
+            dockerDropdown.appendChild(option);
         }
     </script>
 </body>
