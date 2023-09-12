@@ -1,7 +1,7 @@
-function getSliceByIndex(arr, index) {
-  const arrayLength = arr.length;
-  const endIndex = arrayLength - (index - 1) * 10;
-  const startIndex = Math.max(0, endIndex - 10); // Ensure the start index is within bounds
+function getSliceOfArray(arr, index) {
+  const sliceSize = 10;
+  const startIndex = Math.max(arr.length - index * sliceSize, 0);
+  const endIndex = Math.min(startIndex + sliceSize, arr.length);
 
   return arr.slice(startIndex, endIndex);
 }
