@@ -1,30 +1,18 @@
-const fs = require("fs");
+function extractDockerBuildRunText(text) {
+  // Split the text into an array of lines.
+  const lines = text.split("\n");
 
-// Define the input file path
-const inputFilePath = "your_input.txt";
+  // Find the index of the first line that contains "docker build".
+  const buildIndex = lines.findIndex((line) => line.includes("docker build"));
 
-// Read the contents of the file
-fs.readFile(inputFilePath, "utf8", (err, data) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
+  // Find the index of the first line that contains "docker run" after the index of the "docker build" line.
+  const runIndex = lines.findIndex(
+    (line, index) => line.includes("docker run") && index > buildIndex
+  );
 
-  // Use regular expressions to extract text between "docker build" and "docker run"
-  const regex = /docker build([\s\S]*?)docker run/g;
-  const matches = [...data.matchAll(regex)];
+  // Extract the lines from the array between the two indices.
+  const extractedLines = lines.slice(buildIndex + 1, runIndex);
 
-  // Extracted text will be stored in this array
-  const extractedText = [];
-
-  // Iterate over the matches and extract the content
-  for (const match of matches) {
-    extractedText.push(match[1].trim());
-  }
-
-  // Join the extracted text into a single string (if needed)
-  const finalText = extractedText.join("\n");
-
-  // Print or process the final text
-  console.log(finalText);
-});
+  // Return the extracted lines as a string.
+  return extractedLines.join("\n");
+}
