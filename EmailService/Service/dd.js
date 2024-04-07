@@ -1,58 +1,37 @@
-// Function to generate XLSX content
-function generateXLSXContent() {
-  var content = '<?xml version="1.0"?>\n';
-  content += '<?mso-application progid="Excel.Sheet"?>\n';
-  content +=
-    '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:html="http://www.w3.org/TR/REC-html40">\n';
+// Create a JavaScript file, e.g., createCSV.js
 
-  content += ' <Worksheet ss:Name="Sheet1">\n';
-  content += "  <Table>\n";
+// Function to create the CSV file
+function createCSV(dockerName) {
+  const jsonData = [
+    { EP: "duduUC", tran: ["aaaa", "bbbbb"] },
+    { EP: "dudu2UC", tran: ["cccc", "dddd"] },
+  ];
 
-  content += "   <Row>\n";
-  content += '    <Cell><Data ss:Type="String">Test1</Data></Cell>\n';
-  content += '    <Cell><Data ss:Type="String">Test2</Data></Cell>\n';
-  content += '    <Cell><Data ss:Type="String">Test3</Data></Cell>\n';
-  content += "   </Row>\n";
+  let csvContent = "data:text/csv;charset=utf-8,";
+  csvContent += "Docker Name\n";
+  csvContent += dockerName + "\n\n";
 
-  content += "   <Row>\n";
-  content += '    <Cell><Data ss:Type="String">Value1</Data></Cell>\n';
-  content += '    <Cell><Data ss:Type="String">Value2</Data></Cell>\n';
-  content += '    <Cell><Data ss:Type="String">Value3</Data></Cell>\n';
-  content += "   </Row>\n";
-
-  content += "  </Table>\n";
-  content += " </Worksheet>\n";
-
-  content += "</Workbook>";
-
-  return content;
-}
-
-// Function to download file
-function downloadFile(blob, filename) {
-  var a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = filename;
-  a.click();
-}
-
-// Function to create button
-function createButton() {
-  var button = document.createElement("button");
-  button.textContent = "Generate XLSX";
-  button.id = "generateBtn";
-  button.addEventListener("click", function () {
-    var data = generateXLSXContent();
-    var blob = new Blob([data], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    });
-    downloadFile(blob, "example.xlsx");
+  jsonData.forEach((item) => {
+    csvContent += ",," + item.EP + ",\n";
+    csvContent += ",," + item.tran[0] + ",\n";
+    csvContent += ",," + item.tran[1] + ",\n\n";
   });
-  return button;
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "data.csv");
+  document.body.appendChild(link); // Required for Firefox
+  link.click();
 }
 
-// Add the button to the body when the DOM content is loaded
-document.addEventListener("DOMContentLoaded", function () {
-  var button = createButton();
+// Function to create the button
+function createButton() {
+  const button = document.createElement("button");
+  button.textContent = "Create CSV";
+  button.addEventListener("click", () => createCSV("testDocker"));
   document.body.appendChild(button);
-});
+}
+
+// Call the function to create the button when the script is loaded
+createButton();
