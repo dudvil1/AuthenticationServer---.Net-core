@@ -1,18 +1,45 @@
-const fs = require("fs");
+// Function to generate XLSX content
+function generateXLSXContent() {
+    var content = '<?xml version="1.0"?>\n';
+    content += '<?mso-application progid="Excel.Sheet"?>\n';
+    content += '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:html="http://www.w3.org/TR/REC-html40">\n';
+    
+    content += ' <Worksheet ss:Name="Sheet1">\n';
+    content += '  <Table>\n';
 
-const csFilePath = "path/to/your/file.cs";
-const outputJsFilePath = "path/to/your/output.js";
+    content += '   <Row>\n';
+    content += '    <Cell><Data ss:Type="String">Test1</Data></Cell>\n';
+    content += '    <Cell><Data ss:Type="String">Test2</Data></Cell>\n';
+    content += '    <Cell><Data ss:Type="String">Test3</Data></Cell>\n';
+    content += '   </Row>\n';
 
-// Read C# file content
-const csFileContent = fs.readFileSync(csFilePath, "utf-8");
+    content += '   <Row>\n';
+    content += '    <Cell><Data ss:Type="String">Value1</Data></Cell>\n';
+    content += '    <Cell><Data ss:Type="String">Value2</Data></Cell>\n';
+    content += '    <Cell><Data ss:Type="String">Value3</Data></Cell>\n';
+    content += '   </Row>\n';
 
-// Perform simple string replacements
-// Example: Replace property names
-const modifiedJsCode = csFileContent
-  .replace(/propertyName1/g, "newPropertyName1")
-  .replace(/propertyName2/g, "newPropertyName2");
+    content += '  </Table>\n';
+    content += ' </Worksheet>\n';
 
-// Write the modified code back to the output file
-fs.writeFileSync(outputJsFilePath, modifiedJsCode, "utf-8");
+    content += '</Workbook>';
 
-console.log("Conversion completed.");
+    return content;
+}
+
+// Function to download file
+function downloadFile(blob, filename) {
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+}
+
+// Event listener for button click
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('generateBtn').addEventListener('click', function() {
+        var data = generateXLSXContent();
+        var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        downloadFile(blob, 'example.xlsx');
+    });
+});
