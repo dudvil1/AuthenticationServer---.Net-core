@@ -24,3 +24,4 @@ document
     document.body.appendChild(link); // Required for Firefox
     link.click();
   });
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>;
