@@ -1,27 +1,30 @@
-document
-  .getElementById("createXLSButton")
-  .addEventListener("click", function () {
-    var dockerName = document.getElementById("dockerName").value.trim();
-    var jsonData = [
-      { EP: "duduUC", tran: "aaaa", apgee: "bbbbb" },
-      { EP: "dudu2UC", tran: "cccc", apgee: "dddd" },
-    ];
+const fs = require("fs");
+const path = require("path");
+const yaml = require("js-yaml");
 
-    var csvContent = "data:text/csv;charset=utf-8,";
+function processFilesInFolder(directory, inputName) {
+  try {
+    const files = fs
+      .readdirSync(directory)
+      .filter((file) => file.endsWith(".yaml"));
+    const differentFile = files.find((file) => file !== inputName);
 
-    // Add Docker Name
-    csvContent += dockerName + "\n";
+    if (differentFile) {
+      const filePath = path.join(directory, differentFile);
+      const fileContent = fs.readFileSync(filePath, "utf8");
+      const yamlData = yaml.safeLoad(fileContent);
+      // Do whatever you need to do with the YAML data
+      console.log(`Processing file: ${differentFile}`);
+      console.log(yamlData);
+    } else {
+      console.log("No file with a different name found.");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
 
-    // Add EP and apgee from jsonData
-    jsonData.forEach(function (item) {
-      csvContent += item.EP + "," + item.apgee + "\n";
-    });
-
-    var encodedUri = encodeURI(csvContent);
-    var link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "output.xls");
-    document.body.appendChild(link); // Required for Firefox
-    link.click();
-  });
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>;
+// Usage
+const directory = "/path/to/your/folder";
+const inputFileName = "your_input_file_name.yaml";
+processFilesInFolder(directory, inputFileName);
