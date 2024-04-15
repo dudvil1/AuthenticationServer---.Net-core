@@ -1,30 +1,13 @@
-const fs = require("fs");
-const path = require("path");
-const yaml = require("js-yaml");
-
-function processFilesInFolder(directory, inputName) {
-  try {
-    const files = fs
-      .readdirSync(directory)
-      .filter((file) => file.endsWith(".yaml"));
-    const differentFile = files.find((file) => file !== inputName);
-
-    if (differentFile) {
-      const filePath = path.join(directory, differentFile);
-      const fileContent = fs.readFileSync(filePath, "utf8");
-      const yamlData = yaml.safeLoad(fileContent);
-      // Do whatever you need to do with the YAML data
-      console.log(`Processing file: ${differentFile}`);
-      console.log(yamlData);
-    } else {
-      console.log("No file with a different name found.");
-    }
-  } catch (error) {
-    console.error("Error:", error);
-  }
+function modifyString(input) {
+  let b = input.charAt(0).toUpperCase() + input.slice(1); // Uppercase first letter
+  let c = input.charAt(0).toLowerCase() + input.slice(1); // Lowercase first letter
+  return { b, c };
 }
 
-// Usage
-const directory = "/path/to/your/folder";
-const inputFileName = "your_input_file_name.yaml";
-processFilesInFolder(directory, inputFileName);
+// Example usage:
+let inputString = "hello"; // Example input string
+
+let { b, c } = modifyString(inputString);
+console.log(b); // Output: "Hello"
+console.log(c); // Output: "hello"
+s;
