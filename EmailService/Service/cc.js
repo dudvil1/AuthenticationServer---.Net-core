@@ -1,56 +1,44 @@
-const { exec } = require("child_process");
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Autocomplete Example</title>
+</head>
+<body>
 
-// Define the folder paths
-const paths = [
-  "path/to/your/first/folder",
-  "path/to/your/second/folder",
-  "path/to/your/third/folder",
+<input list="suggestions" id="autocomplete" placeholder="Start typing...">
+<datalist id="suggestions"></datalist>
+
+<script src="autocomplete.js"></script>
+</body>
+</html>
+
+// Array of suggestions
+const suggestions = [
+  "Apple",
+  "Banana",
+  "Cherry",
+  "Date",
+  "Fig",
+  "Grape",
+  "Kiwi",
+  "Lemon",
+  "Mango",
+  "Orange",
+  "Peach",
+  "Quince",
+  "Raspberry",
+  "Strawberry",
+  "Tomato",
+  "Ugli Fruit",
+  "Watermelon",
 ];
 
-// Function to execute a command in a given path
-function executeCommand(command, path) {
-  return new Promise((resolve, reject) => {
-    exec(command, { cwd: path }, (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Error in ${path}: ${error.message}`);
-        reject(error);
-        return;
-      }
-      if (stderr) {
-        console.error(`Stderr in ${path}: ${stderr}`);
-      }
-      console.log(`Stdout in ${path}: ${stdout}`);
-      resolve();
-    });
-  });
-}
+// Get the datalist element
+const dataList = document.getElementById("suggestions");
 
-// Function to run git fetch and pull for each path
-async function fetchAndPullAll() {
-  for (const path of paths) {
-    try {
-      console.log(`Running git fetch and pull in ${path}...`);
-      await executeCommand("git fetch", path);
-      console.log(`Git fetch completed in ${path}.`);
-      await executeCommand("git pull", path);
-      console.log(`Git pull completed in ${path}.`);
-    } catch (error) {
-      console.error(`Failed to run git commands in ${path}: ${error.message}`);
-    }
-  }
-}
-
-// Function to run fetchAndPullAll every 1 minute
-function startPeriodicFetchAndPull(interval = 1 * 60 * 1000) {
-  // Default interval of 1 minute
-  // Run immediately
-  fetchAndPullAll();
-
-  // Set interval
-  setInterval(() => {
-    fetchAndPullAll();
-  }, interval);
-}
-
-// Start periodic fetch and pull every 1 minute
-startPeriodicFetchAndPull();
+// Populate the datalist with options
+suggestions.forEach(function (item) {
+  let option = document.createElement("option");
+  option.value = item;
+  dataList.appendChild(option);
+});
